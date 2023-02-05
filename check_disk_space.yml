@@ -1,0 +1,24 @@
+---
+- name: Run multiple commands on Cisco Nexus
+  hosts: nexus
+  connection: network_cli
+  gather_facts: no
+  vars:
+    space_needed: 2300000000
+  tasks:
+    - name: run command to find disk space
+      nxos_command:
+        commands:
+          - command: dir
+            output: json
+      register: disk_space
+
+
+    - name: get the free space and assign it to a variable
+      set_fact:
+        free_space : "{{disk_space.stdout[0].bytesfree}}"
+
+    - name:  devices with not enough space
+      fail:
+        msg: "Device {{ ansible_host }} DOES NOT have enough space, please delete some files and try again!."
+      when: free_space|int < space_needed
