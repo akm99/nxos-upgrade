@@ -1,0 +1,12 @@
+---
+- name: Check firmware version
+  hosts: all
+  connection: network_cli
+  gather_facts: no
+  vars:
+   ansible_network_os: nxos
+  tasks:
+   - name: gather current version
+     nxos_facts:
+   - debug:
+       msg: "{{ ansible_host }} is running {{ hostvars[ansible_host]['ansible_facts']['net_version'] }}"
