@@ -1,0 +1,17 @@
+---
+- name: Check nxos version
+  hosts: nexus
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+   - name: show version command
+     nxos_command:
+       commands:
+         - command: "show version"
+           output: json
+     register: version_output
+
+   - name: print output
+     debug:
+       msg: "The OS version of {{ansible_host}} is {{version_output.stdout[0].nxos_ver_str}}"
