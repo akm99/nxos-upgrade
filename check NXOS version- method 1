@@ -15,3 +15,5 @@
    - name: print output
      debug:
        msg: "The OS version of {{ansible_host}} is {{version_output.stdout[0].nxos_ver_str}}"
+       
+#Comments added to the commit
